@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Kitty 法考上岸打卡小屋 · 手机优化版</title>
+  <style>
+    :root {
+      --pink-50: #fff6fb;
+      --pink-100: #ffe6f3;
+      --pink-200: #ffc9e4;
+      --pink-300: #ff9dcc;
+      --pink-400: #ff6caf;
+      --pink-500: #f94f9e;
+      --rose: #e83e8c;
+      --cream: #fffaf0;
+      --mint: #dff8ec;
+      --lemon: #fff2b8;
+      --purple: #e9ddff;
+      --text: #58364c;
+      --muted: #8a6f80;
+      --card: rgba(255, 255, 255, 0.78);
+      --border: rgba(255, 121, 175, 0.24);
+      --shadow: 0 18px 50px rgba(233, 62, 140, 0.16);
+      --shadow-soft: 0 10px 28px rgba(233, 62, 140, 0.12);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 10% 5%, rgba(255, 201, 228, 0.65), transparent 28%),
+        radial-gradient(circle at 85% 10%, rgba(255, 242, 184, 0.72), transparent 30%),
+        radial-gradient(circle at 72% 82%, rgba(223, 248, 236, 0.7), transparent 28%),
+        linear-gradient(135deg, #fff7fb 0%, #fffaf0 50%, #fff0f8 100%);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background: rgba(255, 157, 204, 0.22);
+      filter: blur(2px);
+      z-index: -1;
+    }
+
+    body::before { top: -90px; left: -90px; }
+    body::after { right: -100px; bottom: -120px; background: rgba(233, 221, 255, 0.34); }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 52px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 36px;
+      padding: 28px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(255, 230, 243, 0.82));
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "🎀 ✨ ☕ 📚 💗";
+      position: absolute;
+      right: 24px;
+      top: 22px;
+      color: rgba(232, 62, 140, 0.35);
+      font-size: 42px;
+      letter-spacing: 8px;
+      transform: rotate(4deg);
+      pointer-events: none;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .kitty-face {
+      position: relative;
+      width: 82px;
+      height: 70px;
+      flex: 0 0 auto;
+      border: 3px solid #ff9dcc;
+      border-radius: 48% 48% 45% 45%;
+      background: #fff;
+      box-shadow: 0 12px 26px rgba(249, 79, 158, 0.2);
+    }
+
+    .kitty-face::before,
+    .kitty-face::after {
+      content: "";
+      position: absolute;
+      top: -12px;
+      width: 26px;
+      height: 26px;
+      background: #fff;
+      border-top: 3px solid #ff9dcc;
+      border-left: 3px solid #ff9dcc;
+      transform: rotate(45deg);
+      z-index: -1;
+    }
+
+    .kitty-face::before { left: 8px; }
+    .kitty-face::after { right: 8px; }
+
+    .bow {
+      position: absolute;
+      right: 2px;
+      top: -12px;
+      width: 34px;
+      height: 24px;
+      z-index: 2;
+    }
+
+    .bow span {
+      position: absolute;
+      background: #ff5aa8;
+      border: 2px solid #e83e8c;
+    }
+
+    .bow .left,
+    .bow .right {
+      width: 17px;
+      height: 20px;
+      border-radius: 50% 50% 45% 45%;
+      top: 2px;
+    }
+
+    .bow .left { left: 0; transform: rotate(-24deg); }
+    .bow .right { right: 0; transform: rotate(24deg); }
+    .bow .mid {
+      left: 12px;
+      top: 7px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .eye {
+      position: absolute;
+      top: 32px;
+      width: 7px;
+      height: 10px;
+      border-radius: 50%;
+      background: #513142;
+    }
+
+    .eye.left { left: 24px; }
+    .eye.right { right: 24px; }
+
+    .nose {
+      position: absolute;
+      top: 42px;
+      left: 50%;
+      width: 10px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ffd557;
+      transform: translateX(-50%);
+      border: 1px solid #e8bf42;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      color: #d93184;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .date-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--border);
+      color: #d93184;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 18px;
+      margin-top: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .countdown-card,
+    .encourage-card,
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .countdown-card {
+      padding: 24px;
+      min-height: 214px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 201, 228, 0.72));
+    }
+
+    .countdown-label { color: var(--muted); font-weight: 700; }
+
+    .days {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin: 10px 0;
+      color: #d93184;
+    }
+
+    .days strong {
+      font-size: clamp(54px, 9vw, 92px);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+    }
+
+    .days span { font-size: 24px; font-weight: 800; }
+
+    .stage-message {
+      padding: 14px 16px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.66);
+      color: #6b415a;
+      line-height: 1.65;
+      font-weight: 600;
+    }
+
+    .encourage-card {
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(255, 250, 240, 0.9), rgba(233, 221, 255, 0.72));
+    }
+
+    .mini-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: #d93184;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .quote {
+      min-height: 92px;
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.66);
+      line-height: 1.7;
+      font-weight: 700;
+      color: #6b415a;
+    }
+
+    button, input, textarea, select { font: inherit; }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease, opacity 0.18s ease;
+    }
+
+    button:hover { transform: translateY(-2px); filter: brightness(1.02); }
+    button:active { transform: translateY(0); }
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      filter: grayscale(0.15);
+      box-shadow: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff6caf, #f94f9e);
+      color: #fff;
+      font-weight: 900;
+      box-shadow: 0 12px 24px rgba(249, 79, 158, 0.28);
+    }
+
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.76);
+      color: #d93184;
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .btn.cream {
+      background: linear-gradient(135deg, #fff2b8, #ffd557);
+      color: #754c16;
+    }
+
+    .btn.mint {
+      background: linear-gradient(135deg, #dff8ec, #9be6c2);
+      color: #2e6b52;
+    }
+
+    .btn.small {
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .stat {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.76);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stat .num {
+      margin-top: 8px;
+      font-size: 30px;
+      font-weight: 950;
+      color: #d93184;
+      letter-spacing: -0.04em;
+    }
+
+    .stat .label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .card { padding: 22px; }
+
+    .card h2 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      color: #d93184;
+      font-size: 22px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+      margin-top: -8px;
+      margin-bottom: 16px;
+    }
+
+    .checkin-panel { display: grid; gap: 14px; }
+
+    .today-hours {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(255, 230, 243, 0.86), rgba(255, 255, 255, 0.74));
+      border: 1px solid var(--border);
+    }
+
+    .today-hours strong {
+      font-size: 38px;
+      color: #d93184;
+      letter-spacing: -0.04em;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid rgba(255, 121, 175, 0.34);
+      background: rgba(255, 255, 255, 0.78);
+      border-radius: 18px;
+      padding: 12px 14px;
+      color: var(--text);
+      outline: none;
+      transition: border 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #ff6caf;
+      box-shadow: 0 0 0 4px rgba(255, 108, 175, 0.14);
+    }
+
+    textarea { min-height: 88px; resize: vertical; }
+
+    .custom-time {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .progress-wrap { margin-top: 14px; }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      color: #7a5268;
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .progress {
+      height: 18px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 201, 228, 0.5);
+      border: 1px solid rgba(255, 121, 175, 0.24);
+    }
+
+    .bar {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff9dcc, #f94f9e, #ffd557);
+      transition: width 0.35s ease;
+    }
+
+    .coffee-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255, 250, 240, 0.92), rgba(255, 230, 243, 0.78));
+    }
+
+    .coffee-card::after {
+      content: "☕";
+      position: absolute;
+      right: 20px;
+      bottom: -12px;
+      font-size: 110px;
+      opacity: 0.11;
+      transform: rotate(-10deg);
+    }
+
+    .voucher-box {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 12px;
+    }
+
+    .voucher {
+      padding: 16px;
+      border-radius: 22px;
+      border: 1px dashed #e83e8c;
+      background: rgba(255, 255, 255, 0.68);
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .subject-list { display: grid; gap: 12px; }
+
+    .subject-item {
+      padding: 14px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.66);
+      border: 1px solid rgba(255, 121, 175, 0.18);
+    }
+
+    .subject-top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .subject-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 900;
+      color: #6b415a;
+    }
+
+    .subject-value {
+      font-weight: 950;
+      color: #d93184;
+    }
+
+    input[type="range"] {
+      padding: 0;
+      height: 12px;
+      accent-color: #ff6caf;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .subject-note {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .weekday {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--muted);
+      padding-bottom: 4px;
+    }
+
+    .day {
+      min-height: 58px;
+      border-radius: 16px;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.62);
+      border: 1px solid rgba(255, 121, 175, 0.16);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 800;
+      color: #7a5268;
+    }
+
+    .day.empty { background: transparent; border: 0; }
+    .day.today { outline: 3px solid rgba(255, 108, 175, 0.32); }
+    .day.level-1 { background: #ffe6f3; }
+    .day.level-2 { background: #ffc9e4; }
+    .day.level-3 { background: #ff9dcc; color: #fff; }
+    .day.level-4 { background: linear-gradient(135deg, #ff6caf, #f94f9e); color: #fff; }
+
+    .day .hours { font-size: 11px; opacity: 0.9; }
+
+    .logs {
+      display: grid;
+      gap: 10px;
+      max-height: 360px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .log-item {
+      display: grid;
+      grid-template-columns: 94px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.66);
+      border: 1px solid rgba(255, 121, 175, 0.16);
+    }
+
+    .log-date { font-weight: 950; color: #d93184; }
+    .log-content { color: #6b415a; line-height: 1.45; }
+    .log-hours { font-weight: 950; color: #754c16; background: #fff2b8; padding: 6px 10px; border-radius: 999px; }
+
+    .energy-card {
+      background: linear-gradient(135deg, rgba(233, 221, 255, 0.78), rgba(255, 230, 243, 0.82));
+    }
+
+    .energy-result {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.7);
+      line-height: 1.7;
+      font-weight: 800;
+    }
+
+    .badge-wall {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .badge {
+      padding: 14px 10px;
+      border-radius: 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.64);
+      border: 1px solid rgba(255, 121, 175, 0.18);
+      color: #9a8391;
+      font-weight: 900;
+      min-height: 92px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      filter: grayscale(0.7);
+      opacity: 0.72;
+    }
+
+    .badge.unlocked {
+      color: #d93184;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 230, 243, 0.84));
+      filter: none;
+      opacity: 1;
+      box-shadow: 0 10px 24px rgba(249, 79, 158, 0.13);
+    }
+
+    .badge-icon { font-size: 26px; }
+    .badge small { color: var(--muted); font-size: 11px; }
+
+    .footer {
+      margin-top: 22px;
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(20px);
+      z-index: 99;
+      min-width: min(520px, calc(100% - 32px));
+      padding: 16px 18px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      color: #d93184;
+      font-weight: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.26s ease;
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: rgba(91, 45, 73, 0.28);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-backdrop.show { display: grid; }
+
+    .modal {
+      width: min(520px, 100%);
+      border-radius: 32px;
+      padding: 26px;
+      background: linear-gradient(135deg, #fff, #ffe6f3);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .modal .big {
+      font-size: 58px;
+      margin-bottom: 8px;
+    }
+
+    .modal h3 {
+      color: #d93184;
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .modal p {
+      color: #6b415a;
+      line-height: 1.75;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .timer-time {
+      margin: 12px auto 16px;
+      width: min(360px, 100%);
+      padding: 20px 14px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--border);
+      font-size: clamp(44px, 10vw, 76px);
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: -0.06em;
+      color: #d93184;
+      box-shadow: var(--shadow-soft);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timer-subtitle {
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .timer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .danger-zone {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(232, 62, 140, 0.25);
+    }
+
+
+    .mobile-summary,
+    .mobile-bottom-bar {
+      display: none;
+    }
+
+    button:disabled {
+      opacity: 0.56;
+      cursor: not-allowed;
+      transform: none;
+      filter: grayscale(0.2);
+    }
+
+    .mobile-summary {
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(255, 230, 243, 0.82));
+      box-shadow: var(--shadow-soft);
+    }
+
+    .mobile-summary-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .mobile-summary-top strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 34px;
+      line-height: 1;
+      color: #d93184;
+      letter-spacing: -0.04em;
+    }
+
+    .mobile-kicker {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .mobile-chip {
+      max-width: 52%;
+      padding: 9px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid var(--border);
+      color: #d93184;
+      font-size: 12px;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    .mobile-quick-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .mobile-quick-grid .btn {
+      width: 100%;
+      min-height: 48px;
+      padding: 11px 10px;
+    }
+
+    .mobile-quick-grid .btn:nth-child(3) {
+      grid-column: 1 / -1;
+    }
+
+    .mobile-coffee-line {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.68);
+      color: #754c16;
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1.45;
+    }
+
+    .mobile-bottom-bar {
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: calc(10px + env(safe-area-inset-bottom));
+      z-index: 88;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 8px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .mobile-bottom-bar button {
+      min-height: 44px;
+      border-radius: 18px;
+      background: rgba(255, 230, 243, 0.86);
+      color: #d93184;
+      font-weight: 950;
+      font-size: 12px;
+      border: 1px solid rgba(255, 121, 175, 0.18);
+    }
+
+    .mobile-bottom-bar button:nth-child(1),
+    .mobile-bottom-bar button:nth-child(2) {
+      background: linear-gradient(135deg, #ff6caf, #f94f9e);
+      color: #fff;
+      box-shadow: 0 8px 16px rgba(249, 79, 158, 0.2);
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .hero::after { opacity: 0.24; right: -34px; top: 78px; font-size: 34px; }
+      .badge-wall { grid-template-columns: repeat(2, 1fr); }
+      .log-item { grid-template-columns: 1fr auto; }
+      .log-date { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 700px) {
+      body { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
+      .mobile-summary { display: block; }
+      .mobile-bottom-bar { display: grid; }
+      .page { width: min(100% - 20px, 1180px); padding: 12px 0 28px; }
+      .hero { padding: 16px; border-radius: 26px; }
+      .hero-grid { gap: 12px; margin-top: 14px; }
+      .brand { align-items: center; gap: 12px; }
+      .kitty-face { width: 58px; height: 50px; border-width: 2px; }
+      .kitty-face::before, .kitty-face::after { top: -9px; width: 20px; height: 20px; border-width: 2px; }
+      .bow { transform: scale(0.82); transform-origin: top right; right: -2px; }
+      .eye { top: 24px; width: 6px; height: 8px; }
+      .eye.left { left: 17px; }
+      .eye.right { right: 17px; }
+      .nose { top: 33px; width: 9px; height: 6px; }
+      h1 { font-size: 24px; line-height: 1.12; letter-spacing: -0.03em; }
+      .subtitle { margin-top: 5px; font-size: 12px; line-height: 1.45; }
+      .date-pill { padding: 8px 11px; font-size: 12px; box-shadow: none; }
+      #todayText { max-width: 100%; white-space: normal; }
+      .countdown-card, .encourage-card, .card { border-radius: 22px; }
+      .countdown-card { min-height: auto; padding: 16px; gap: 10px; }
+      .countdown-label { font-size: 12px; }
+      .days { margin: 5px 0; }
+      .days strong { font-size: 52px; }
+      .days span { font-size: 17px; }
+      .stage-message { padding: 10px 12px; border-radius: 16px; font-size: 13px; line-height: 1.55; }
+      .encourage-card { padding: 15px; }
+      .mini-title { margin-bottom: 8px; font-size: 16px; }
+      .quote { min-height: auto; padding: 12px; border-radius: 16px; font-size: 13px; line-height: 1.6; }
+      .actions-row { gap: 8px; }
+      .actions-row .btn { flex: 1 1 auto; min-height: 44px; }
+      .stats { margin: 14px 0 0; gap: 10px; }
+      .stat { padding: 12px; border-radius: 20px; }
+      .stat .label { font-size: 12px; }
+      .stat .num { margin-top: 4px; font-size: 23px; }
+      .grid { margin-top: 14px; gap: 14px; }
+      .card { padding: 16px; }
+      .card h2 { margin-bottom: 12px; font-size: 19px; }
+      .hint { font-size: 12px; line-height: 1.55; margin-bottom: 12px; }
+      .today-hours { padding: 13px; border-radius: 20px; }
+      .today-hours strong { font-size: 32px; }
+      .input-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .input-row .btn { padding: 10px 8px; min-height: 48px; font-size: 13px; }
+      .custom-time { grid-template-columns: 1fr; }
+      input, textarea, select { border-radius: 16px; padding: 12px; font-size: 16px; }
+      textarea { min-height: 100px; }
+      .subject-top { grid-template-columns: 1fr; gap: 8px; }
+      .subject-value { justify-self: flex-start; padding: 4px 9px; border-radius: 999px; background: rgba(255, 230, 243, 0.8); }
+      .subject-note { grid-template-columns: 1fr; }
+      .subject-note .btn { width: 100%; }
+      .calendar { gap: 5px; }
+      .weekday { font-size: 11px; }
+      .day { min-height: 46px; padding: 5px; border-radius: 13px; font-size: 11px; }
+      .day .hours { font-size: 10px; }
+      .logs { max-height: 300px; }
+      .log-item { gap: 8px; padding: 10px; border-radius: 16px; }
+      .toast { bottom: calc(82px + env(safe-area-inset-bottom)); min-width: min(420px, calc(100% - 24px)); padding: 13px 14px; border-radius: 18px; }
+      .modal-backdrop { align-items: end; padding: 12px; }
+      .modal { width: 100%; border-radius: 28px 28px 20px 20px; padding: 20px 16px calc(18px + env(safe-area-inset-bottom)); }
+      .modal .big { font-size: 44px; margin-bottom: 4px; }
+      .modal h3 { font-size: 21px; }
+      .modal p { font-size: 13px; line-height: 1.65; }
+      .timer-time { width: 100%; padding: 18px 10px; border-radius: 24px; font-size: clamp(48px, 17vw, 72px); }
+      .timer-actions { display: grid; grid-template-columns: 1fr 1fr; }
+      .timer-actions .btn { width: 100%; min-height: 50px; }
+      .footer { margin-top: 14px; padding: 12px; font-size: 12px; }
+    }
+
+    @media (max-width: 380px) {
+      .page { width: min(100% - 14px, 1180px); }
+      h1 { font-size: 22px; }
+      .input-row { grid-template-columns: 1fr; }
+      .mobile-bottom-bar { left: 8px; right: 8px; gap: 6px; }
+      .mobile-bottom-bar button { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="topbar">
+        <div class="brand">
+          <div class="kitty-face" aria-label="Kitty 风小猫头像">
+            <div class="bow"><span class="left"></span><span class="mid"></span><span class="right"></span></div>
+            <span class="eye left"></span>
+            <span class="eye right"></span>
+            <span class="nose"></span>
+          </div>
+          <div>
+            <h1>Kitty 法考上岸打卡小屋</h1>
+            <p class="subtitle">手机友好版 · 先倒计时再记录 · 每 20 小时兑换一杯咖啡 ☕</p>
+          </div>
+        </div>
+        <div class="date-pill" id="todayText">🎀 今天</div>
+      </div>
+
+      <div class="hero-grid">
+        <div class="countdown-card">
+          <div>
+            <p class="countdown-label">距离 2026 年法考客观题 2026.09.12 还有</p>
+            <div class="days"><strong id="daysLeft">--</strong><span>天</span></div>
+          </div>
+          <div class="stage-message" id="stageMessage">Kitty 正在计算你的冲刺阶段……</div>
+        </div>
+
+        <div class="encourage-card">
+          <div class="mini-title">💌 今日 Kitty 鼓励</div>
+          <div class="quote" id="dailyQuote"></div>
+          <div class="actions-row">
+            <button class="btn secondary" id="changeQuoteBtn">换一句鼓励</button>
+            <button class="btn cream" id="drawCardBtn">抽能量卡</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="学习统计">
+      <div class="stat">
+        <div class="label">连续打卡</div>
+        <div class="num"><span id="streakDays">0</span> 天</div>
+      </div>
+      <div class="stat">
+        <div class="label">累计学习</div>
+        <div class="num"><span id="totalHours">0</span> h</div>
+      </div>
+      <div class="stat">
+        <div class="label">累计打卡</div>
+        <div class="num"><span id="totalDays">0</span> 天</div>
+      </div>
+      <div class="stat">
+        <div class="label">已兑换咖啡</div>
+        <div class="num"><span id="coffeeCount">0</span> 杯</div>
+      </div>
+    </section>
+
+    <section class="mobile-summary" aria-label="手机快速打卡面板">
+      <div class="mobile-summary-top">
+        <div>
+          <span class="mobile-kicker">今日学习</span>
+          <strong><span id="mobileTodayHours">0</span> h</strong>
+        </div>
+        <div class="mobile-chip" id="mobileStageText">距离考试 -- 天</div>
+      </div>
+      <div class="mobile-quick-grid">
+        <button class="btn" data-add-hours="0.5">开始 30 分钟</button>
+        <button class="btn" data-add-hours="1">开始 1 小时</button>
+        <button class="btn secondary" id="mobileNoteBtn" type="button">写今日备注</button>
+      </div>
+      <div class="mobile-coffee-line" id="mobileCoffeeLine">☕ 正在计算咖啡进度……</div>
+    </section>
+
+    <main class="grid">
+      <section class="card priority-card" id="checkinCard">
+        <h2>🎀 今日学习打卡</h2>
+        <p class="hint">点击学习时长后会弹出倒计时，倒计时真正结束后才会自动累计；刷新页面后倒计时会继续，不能提前完成。</p>
+        <div class="checkin-panel">
+          <div class="today-hours">
+            <div>
+              <div class="label">今日已学习</div>
+              <strong><span id="todayHours">0</span> h</strong>
+            </div>
+            <div id="todayStatus" class="date-pill">未打卡</div>
+          </div>
+
+          <div class="input-row">
+            <button class="btn" data-add-hours="0.5">+ 0.5 小时</button>
+            <button class="btn" data-add-hours="1">+ 1 小时</button>
+            <button class="btn secondary" data-add-hours="2">+ 2 小时</button>
+          </div>
+
+          <div class="custom-time">
+            <input id="customHours" type="number" min="0.5" max="4" step="0.5" placeholder="输入自定义学习时长，0.5 到 4 小时" />
+            <button class="btn mint" id="addCustomBtn">开始自定义倒计时</button>
+          </div>
+
+          <textarea id="todayNote" placeholder="今天学了什么？比如：民法合同编 + 刑法共同犯罪 + 错题整理"></textarea>
+          <button class="btn secondary" id="saveNoteBtn">保存今日学习备注</button>
+          <p class="hint" id="noteSaveStatus" style="margin: -4px 0 0;">备注会自动保存，也可以点击按钮手动保存。</p>
+        </div>
+      </section>
+
+      <section class="card coffee-card priority-card" id="coffeeCard">
+        <h2>☕ 董纪君咖啡奖励站</h2>
+        <p class="hint">规则：每累计学习满 20 小时，即可找“董纪君”兑换一杯咖啡。总学习时长不会清零，只记录已兑换杯数。</p>
+        <div class="voucher-box">
+          <div class="voucher" id="coffeeInfo">正在计算咖啡进度……</div>
+          <div class="progress-wrap">
+            <div class="progress-head">
+              <span>下一杯咖啡进度</span>
+              <span id="coffeeProgressText">0 / 20 h</span>
+            </div>
+            <div class="progress"><div class="bar" id="coffeeBar"></div></div>
+          </div>
+          <div class="actions-row">
+            <button class="btn cream" id="redeemCoffeeBtn">兑换一杯咖啡</button>
+            <button class="btn secondary" id="undoLastBtn">撤回最近一次加时</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="subjectCard">
+        <h2>📚 我的法考进度</h2>
+        <p class="hint">进度完全由她自己设置。可以拖动每个科目的进度条，也可以修改备注。</p>
+        <div class="subject-list" id="subjectList"></div>
+      </section>
+
+      <section class="card energy-card" id="energyCard">
+        <h2>✨ Kitty 能量与徽章</h2>
+        <p class="hint">学习越多，Kitty 能量越高；连续打卡和累计学习会自动解锁可爱徽章。</p>
+        <div class="progress-wrap">
+          <div class="progress-head">
+            <span>Kitty 今日能量值</span>
+            <span id="energyText">0 / 100</span>
+          </div>
+          <div class="progress"><div class="bar" id="energyBar"></div></div>
+        </div>
+        <div class="energy-result" id="energyResult">今天先学半小时也很棒，Kitty 在等你打开书哦。</div>
+        <div class="badge-wall" id="badgeWall" style="margin-top: 14px;"></div>
+      </section>
+
+      <section class="card" id="calendarCard">
+        <h2>🗓️ 粉色打卡日历</h2>
+        <p class="hint">颜色越深，代表当天学习时间越长。金色感来自你认真坚持的每一天。</p>
+        <div class="calendar" id="calendar"></div>
+      </section>
+
+      <section class="card" id="logsCard">
+        <h2>📝 学习记录</h2>
+        <p class="hint">自动记录每天学习时长和备注，方便复盘自己最近学了什么。</p>
+        <div class="logs" id="logs"></div>
+        <div class="danger-zone">
+          <div class="actions-row">
+            <button class="btn secondary" id="exportBtn">导出数据</button>
+            <button class="btn secondary" id="importBtn">导入数据</button>
+            <button class="btn secondary" id="resetBtn">重置全部数据</button>
+          </div>
+          <input id="importFile" type="file" accept="application/json" style="display:none" />
+        </div>
+      </section>
+    </main>
+
+    <div class="footer">
+      说明：本页面使用浏览器 localStorage 本地保存数据，不需要登录，也不会上传到服务器。<br />
+      页面采用 Kitty 风格的粉色小猫与蝴蝶结元素，未使用官方图片，适合个人学习打卡使用。
+    </div>
+  </div>
+
+  <nav class="mobile-bottom-bar" aria-label="手机底部快捷操作">
+    <button type="button" data-add-hours="0.5">📚 30分钟</button>
+    <button type="button" data-add-hours="1">⏱️ 1小时</button>
+    <button type="button" id="focusNoteBtn">💌 备注</button>
+    <button type="button" id="jumpLogsBtn">📝 记录</button>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <div class="big" id="modalIcon">☕</div>
+      <h3 id="modalTitle">恭喜解锁咖啡券</h3>
+      <p id="modalText">你已经攒满 20 小时学习能量啦，可以找董纪君兑换一杯咖啡。</p>
+      <button class="btn" id="closeModalBtn">收到啦</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="timerBackdrop">
+    <div class="modal timer-modal">
+      <div class="big">📚</div>
+      <h3 id="timerTitle">Kitty 陪你学习半小时</h3>
+      <div class="timer-time" id="timerTime">30:00</div>
+      <p class="timer-subtitle" id="timerSubtitle">倒计时结束后，会自动累计到今日学习时长和咖啡进度里。</p>
+      <div class="timer-actions">
+        <button class="btn secondary" id="pauseTimerBtn">暂停</button>
+        <button class="btn secondary" id="cancelTimerBtn">取消本次</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const EXAM_DATE = "2026-09-12";
+    const STORAGE_KEY = "kitty_fakao_checkin_v1";
+    const TIMER_KEY = "kitty_fakao_active_timer_v2";
+    const dayMs = 24 * 60 * 60 * 1000;
+
+    const defaultSubjects = [
+      { name: "民法 🌸", progress: 0, note: "可填写：一轮 / 二刷 / 错题整理" },
+      { name: "刑法 ⚖️", progress: 0, note: "可填写：犯罪构成 / 共同犯罪 / 分则" },
+      { name: "行政法 🏛️", progress: 0, note: "可填写：行政行为 / 复议 / 诉讼" },
+      { name: "民诉 📄", progress: 0, note: "可填写：管辖 / 证据 / 执行" },
+      { name: "刑诉 🔍", progress: 0, note: "可填写：强制措施 / 证据 / 程序" },
+      { name: "商经知 💼", progress: 0, note: "可填写：公司法 / 破产 / 知产" },
+      { name: "理论法 📚", progress: 0, note: "可填写：法理 / 宪法 / 法治思想" },
+      { name: "三国法 🌍", progress: 0, note: "可填写：国公 / 国私 / 国经" }
+    ];
+
+    const quotes = [
+      "今天背下的每一个知识点，都会在考场上悄悄保护你。",
+      "不要怕慢，Kitty 陪你一点点变强。",
+      "你不是在普通学习，你是在给未来的自己攒底气。",
+      "先学半小时也很棒，开始本身就是胜利。",
+      "今天多学半小时，咖啡就离你更近一点 ☕",
+      "错题不是打击你，是提前把坑指出来。",
+      "董纪君提醒你：再坚持一下，下一杯咖啡正在路上。",
+      "法考很难，但你每天认真一点，它就会被拆小一点。",
+      "你今天的努力，不会立刻发光，但会在 9 月 12 日给你答案。",
+      "Kitty 说：今天也要做闪闪发光的法考少女 🎀"
+    ];
+
+    const energyCards = [
+      { name: "自律卡 🎀", text: "今天适合攻克一个小难点。不要追求完美，先拿下它。" },
+      { name: "好运卡 🍓", text: "今天刷题手感会变好，错了也算赚到提醒。" },
+      { name: "坚持卡 ✨", text: "再学 30 分钟就很棒，别小看这 30 分钟。" },
+      { name: "上岸卡 👑", text: "你离上岸又近了一点点，未来的你会感谢今天的你。" },
+      { name: "清醒卡 📚", text: "别假装努力，真的打开书，真的刷题，真的复盘。" },
+      { name: "咖啡卡 ☕", text: "今天多攒一点学习能量，下一杯咖啡就快出现啦。" }
+    ];
+
+    const badges = [
+      { key: "streak3", icon: "🎀", title: "小蝴蝶结", desc: "连续 3 天", test: s => calcStreak(s) >= 3 },
+      { key: "streak7", icon: "🍓", title: "法考小甜心", desc: "连续 7 天", test: s => calcStreak(s) >= 7 },
+      { key: "streak14", icon: "👑", title: "自律公主", desc: "连续 14 天", test: s => calcStreak(s) >= 14 },
+      { key: "hours20", icon: "☕", title: "咖啡初体验", desc: "累计 20 小时", test: s => s.totalHours >= 20 },
+      { key: "hours60", icon: "💖", title: "闪光少女", desc: "累计 60 小时", test: s => s.totalHours >= 60 },
+      { key: "hours100", icon: "🏆", title: "上岸预备役", desc: "累计 100 小时", test: s => s.totalHours >= 100 }
+    ];
+
+    let state = loadState();
+    let studyTimer = loadActiveTimer();
+    let timerIntervalId = null;
+
+    function loadState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return freshState();
+      try {
+        const parsed = JSON.parse(raw);
+        return {
+          totalHours: Number(parsed.totalHours || 0),
+          coffeeRedeemed: Number(parsed.coffeeRedeemed || 0),
+          logs: parsed.logs && typeof parsed.logs === "object" ? parsed.logs : {},
+          subjects: Array.isArray(parsed.subjects) && parsed.subjects.length ? parsed.subjects : JSON.parse(JSON.stringify(defaultSubjects)),
+          history: Array.isArray(parsed.history) ? parsed.history : []
+        };
+      } catch (err) {
+        return freshState();
+      }
+    }
+
+    function freshState() {
+      return {
+        totalHours: 0,
+        coffeeRedeemed: 0,
+        logs: {},
+        subjects: JSON.parse(JSON.stringify(defaultSubjects)),
+        history: []
+      };
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadActiveTimer() {
+      const raw = localStorage.getItem(TIMER_KEY);
+      if (!raw) return null;
+      try {
+        const timer = JSON.parse(raw);
+        if (!timer || typeof timer !== "object") return null;
+        if (!Number.isFinite(Number(timer.hours)) || !Number.isFinite(Number(timer.totalSeconds))) return null;
+        if (!timer.paused && !Number.isFinite(Number(timer.endTime))) return null;
+        if (timer.paused && !Number.isFinite(Number(timer.remainingSeconds))) return null;
+        return {
+          hours: Number(timer.hours),
+          totalSeconds: Number(timer.totalSeconds),
+          remainingSeconds: Number(timer.remainingSeconds || timer.totalSeconds),
+          endTime: timer.endTime ? Number(timer.endTime) : null,
+          paused: Boolean(timer.paused),
+          startedAt: timer.startedAt || new Date().toISOString()
+        };
+      } catch (err) {
+        localStorage.removeItem(TIMER_KEY);
+        return null;
+      }
+    }
+
+    function saveActiveTimer() {
+      if (!studyTimer) {
+        localStorage.removeItem(TIMER_KEY);
+        return;
+      }
+      const payload = {
+        hours: studyTimer.hours,
+        totalSeconds: studyTimer.totalSeconds,
+        remainingSeconds: getTimerRemaining(),
+        endTime: studyTimer.endTime,
+        paused: studyTimer.paused,
+        startedAt: studyTimer.startedAt
+      };
+      localStorage.setItem(TIMER_KEY, JSON.stringify(payload));
+    }
+
+    function pad(num) { return String(num).padStart(2, "0"); }
+
+    function localDateString(date = new Date()) {
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    }
+
+    function parseDateKey(key) {
+      const [year, month, day] = String(key).split("-").map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function formatDateCN(date = new Date()) {
+      const week = ["日", "一", "二", "三", "四", "五", "六"][date.getDay()];
+      return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 星期${week}`;
+    }
+
+    function formatHours(value) {
+      const n = Number(value || 0);
+      return Number.isInteger(n) ? String(n) : n.toFixed(1).replace(/\.0$/, "");
+    }
+
+    function todayLog() {
+      const today = localDateString();
+      if (!state.logs[today]) state.logs[today] = { hours: 0, note: "" };
+      return state.logs[today];
+    }
+
+    function activeDates(stateObj = state) {
+      return Object.entries(stateObj.logs)
+        .filter(([, log]) => Number(log.hours || 0) > 0)
+        .map(([date]) => date)
+        .sort();
+    }
+
+    function calcStreak(stateObj = state) {
+      const set = new Set(activeDates(stateObj));
+      let cursor = parseDateKey(localDateString());
+      let streak = 0;
+
+      if (!set.has(localDateString(cursor))) {
+        const yesterday = new Date(cursor.getTime() - dayMs);
+        if (!set.has(localDateString(yesterday))) return 0;
+        cursor = yesterday;
+      }
+
+      while (set.has(localDateString(cursor))) {
+        streak += 1;
+        cursor = new Date(cursor.getTime() - dayMs);
+      }
+      return streak;
+    }
+
+    function daysUntilExam() {
+      const today = parseDateKey(localDateString());
+      const exam = parseDateKey(EXAM_DATE);
+      return Math.ceil((exam - today) / dayMs);
+    }
+
+    function getStageMessage(days) {
+      if (days < 0) return "考试日期已经过去啦。可以把这里改成下一次目标日期，继续开启新的上岸计划。";
+      if (days === 0) return "今天就是考试日。稳住心态，认真审题，Kitty 陪你勇敢上场。";
+      if (days <= 7) return "最后几天，不慌不乱。少熬夜，多稳住，已经准备很久啦。";
+      if (days <= 30) return "考前稳定期：保持手感，回顾错题，别被情绪吓到。Kitty 陪你走到最后。";
+      if (days <= 60) return "刷题冲刺期：现在每一道错题，都是考前送来的提醒。";
+      if (days <= 100) return "强化提升期：错题和薄弱科目要开始重点照顾，别只学喜欢的科目。";
+      return "基础积累期：不用急，但要稳。每天坚持一点点，后面会轻松很多。";
+    }
+
+    function getStageLabel(days) {
+      if (days < 0) return "新计划";
+      if (days === 0) return "考试日";
+      if (days <= 7) return "最后稳心态";
+      if (days <= 30) return "考前稳定期";
+      if (days <= 60) return "刷题冲刺期";
+      if (days <= 100) return "强化提升期";
+      return "基础积累期";
+    }
+
+    function addHours(hours, options = {}) {
+      const value = Number(hours);
+      if (!Number.isFinite(value) || value <= 0) {
+        showToast("请输入正确的学习时长呀 🎀");
+        return false;
+      }
+
+      const beforeAvailable = availableCoffee();
+      const rounded = Math.round(value * 10) / 10;
+      const log = todayLog();
+      log.hours = Math.round((Number(log.hours || 0) + rounded) * 10) / 10;
+      state.totalHours = Math.round((Number(state.totalHours || 0) + rounded) * 10) / 10;
+      state.history.push({ type: "addHours", date: localDateString(), hours: rounded, time: new Date().toISOString() });
+      saveState();
+      render();
+
+      const unlockedCoffee = availableCoffee() > beforeAvailable;
+      if (unlockedCoffee && options.showMilestone !== false) {
+        showModal("☕", "恭喜解锁咖啡券", "你已经攒满 20 小时学习能量啦！可以找“董纪君”兑换一杯咖啡。今天的认真值得被奖励。");
+      }
+      if (options.showToast !== false) {
+        showToast(`已加入 ${formatHours(rounded)} 小时学习时长，Kitty 给你贴一朵小红花 🌸`);
+      }
+      return unlockedCoffee;
+    }
+
+    function normalizeTimerHours(hours) {
+      const value = Number(hours);
+      if (!Number.isFinite(value) || value <= 0) {
+        showToast("请输入正确的学习时长呀 🎀");
+        return null;
+      }
+      if (value < 0.5 || value > 4) {
+        showToast("单次学习时长请设置为 0.5 到 4 小时 🎀");
+        return null;
+      }
+      if (Math.abs(value * 2 - Math.round(value * 2)) > 0.000001) {
+        showToast("学习时长请按 0.5 小时递增，比如 0.5、1、1.5 🎀");
+        return null;
+      }
+      return Math.round(value * 10) / 10;
+    }
+
+    function startStudyTimer(hours) {
+      const rounded = normalizeTimerHours(hours);
+      if (rounded === null) return false;
+
+      if (studyTimer) {
+        if (!confirm("当前已经有一个学习倒计时，要替换成新的倒计时吗？替换后原倒计时不会记录。")) return false;
+        clearStudyTimer(false);
+      }
+
+      const seconds = Math.max(1, Math.round(rounded * 60 * 60));
+      studyTimer = {
+        hours: rounded,
+        totalSeconds: seconds,
+        remainingSeconds: seconds,
+        endTime: Date.now() + seconds * 1000,
+        paused: false,
+        startedAt: new Date().toISOString()
+      };
+
+      saveActiveTimer();
+      openStudyTimerModal();
+      runStudyTimer();
+      showToast("倒计时已开始，结束后才会自动记录学习时长 📚");
+      return true;
+    }
+
+    function openStudyTimerModal() {
+      if (!studyTimer) return;
+      document.getElementById("timerTitle").textContent = studyTimer.hours === 0.5
+        ? "Kitty 陪你学习半小时"
+        : `Kitty 陪你学习 ${formatHours(studyTimer.hours)} 小时`;
+      document.getElementById("pauseTimerBtn").textContent = studyTimer.paused ? "继续" : "暂停";
+      document.getElementById("timerBackdrop").classList.add("show");
+      renderStudyTimer();
+    }
+
+    function runStudyTimer() {
+      clearInterval(timerIntervalId);
+      timerIntervalId = setInterval(() => {
+        if (!studyTimer) {
+          clearInterval(timerIntervalId);
+          return;
+        }
+        const remaining = getTimerRemaining();
+        renderStudyTimer();
+        if (!studyTimer.paused && remaining <= 0) {
+          finishStudyTimer(true);
+        }
+      }, 1000);
+    }
+
+    function getTimerRemaining() {
+      if (!studyTimer) return 0;
+      if (studyTimer.paused) return Math.max(0, Math.ceil(Number(studyTimer.remainingSeconds || 0)));
+      return Math.max(0, Math.ceil((Number(studyTimer.endTime) - Date.now()) / 1000));
+    }
+
+    function renderStudyTimer() {
+      if (!studyTimer) return;
+      const remaining = getTimerRemaining();
+      studyTimer.remainingSeconds = remaining;
+      document.getElementById("timerTime").textContent = formatTimerTime(remaining);
+      const done = Math.max(0, studyTimer.totalSeconds - remaining);
+      const doneMinutes = Math.floor(done / 60);
+      document.getElementById("timerSubtitle").textContent = studyTimer.paused
+        ? "倒计时已暂停，点击继续后再接着学习。暂停期间不会偷偷减少时间。"
+        : `正在学习中，已坚持 ${doneMinutes} 分钟。倒计时结束后会自动记录，不能提前完成。`;
+      document.getElementById("pauseTimerBtn").textContent = studyTimer.paused ? "继续" : "暂停";
+    }
+
+    function formatTimerTime(seconds) {
+      const safe = Math.max(0, Number(seconds || 0));
+      const min = Math.floor(safe / 60);
+      const sec = safe % 60;
+      return `${pad(min)}:${pad(sec)}`;
+    }
+
+    function toggleStudyTimer() {
+      if (!studyTimer) return;
+      const remaining = getTimerRemaining();
+      if (remaining <= 0) {
+        finishStudyTimer(true);
+        return;
+      }
+
+      if (studyTimer.paused) {
+        studyTimer.paused = false;
+        studyTimer.endTime = Date.now() + remaining * 1000;
+        studyTimer.remainingSeconds = remaining;
+        showToast("倒计时已继续，加油呀 📚");
+      } else {
+        studyTimer.paused = true;
+        studyTimer.remainingSeconds = remaining;
+        studyTimer.endTime = null;
+        showToast("倒计时已暂停，继续后才能完成记录");
+      }
+      saveActiveTimer();
+      renderStudyTimer();
+      runStudyTimer();
+    }
+
+    function finishStudyTimer(autoFinished = false) {
+      if (!studyTimer) return;
+      const hours = studyTimer.hours;
+      clearStudyTimer(false);
+      document.getElementById("timerBackdrop").classList.remove("show");
+
+      const unlockedCoffee = addHours(hours, { showMilestone: false, showToast: !autoFinished });
+      if (autoFinished) {
+        if (unlockedCoffee) {
+          showModal("☕", "本次学习完成，咖啡券也解锁啦", `已经自动记录 ${formatHours(hours)} 小时学习时长，并解锁一张“董纪君咖啡券”。`);
+        } else {
+          showModal("🎀", "本次学习完成啦", `已经自动记录 ${formatHours(hours)} 小时学习时长。Kitty 为你鼓掌！`);
+        }
+      }
+    }
+
+    function cancelStudyTimer() {
+      if (!studyTimer) return;
+      if (!confirm("确定取消本次倒计时吗？取消后不会累计学习时长。")) return;
+      clearStudyTimer(true);
+      document.getElementById("timerBackdrop").classList.remove("show");
+      showToast("本次倒计时已取消，没有记录学习时长");
+    }
+
+    function clearStudyTimer(showMessage) {
+      clearInterval(timerIntervalId);
+      timerIntervalId = null;
+      studyTimer = null;
+      localStorage.removeItem(TIMER_KEY);
+      if (showMessage) showToast("倒计时已清除");
+    }
+
+    function restoreActiveTimerOnLoad() {
+      if (!studyTimer) return;
+      if (!studyTimer.paused && getTimerRemaining() <= 0) {
+        finishStudyTimer(true);
+        return;
+      }
+      openStudyTimerModal();
+      runStudyTimer();
+      showToast(studyTimer.paused ? "已恢复上次暂停的学习倒计时 🎀" : "已恢复上次未完成的学习倒计时 🎀");
+    }
+
+    function undoLastAdd() {
+      const idx = [...state.history].reverse().findIndex(item => item.type === "addHours");
+      if (idx === -1) {
+        showToast("还没有可以撤回的加时记录喔");
+        return;
+      }
+      const realIndex = state.history.length - 1 - idx;
+      const item = state.history[realIndex];
+      const log = state.logs[item.date];
+      if (log) log.hours = Math.max(0, Math.round((Number(log.hours || 0) - item.hours) * 10) / 10);
+      state.totalHours = Math.max(0, Math.round((Number(state.totalHours || 0) - item.hours) * 10) / 10);
+      state.coffeeRedeemed = Math.min(state.coffeeRedeemed, Math.floor(state.totalHours / 20));
+      state.history.splice(realIndex, 1);
+      saveState();
+      render();
+      showToast(`已撤回最近一次 ${formatHours(item.hours)} 小时记录，咖啡兑换数量已同步校正`);
+    }
+
+    function availableCoffee() {
+      return Math.max(0, Math.floor(state.totalHours / 20) - state.coffeeRedeemed);
+    }
+
+    function nextCoffeeProgress() {
+      const progress = ((Number(state.totalHours || 0) % 20) + 20) % 20;
+      return Math.round(progress * 10) / 10;
+    }
+
+    function redeemCoffee() {
+      if (availableCoffee() <= 0) {
+        const progress = nextCoffeeProgress();
+        const lack = progress === 0 ? 20 : Math.round((20 - progress) * 10) / 10;
+        showToast(`距离下一杯咖啡还差 ${formatHours(lack)} 小时，加油呀 ☕`);
+        return;
+      }
+      state.coffeeRedeemed += 1;
+      saveState();
+      render();
+      showModal("🎉", "咖啡兑换成功", "已记录一杯“董纪君咖啡”。总学习时长不会清零，下一杯咖啡继续累计。");
+    }
+
+    function saveTodayNote(showMessage = true) {
+      todayLog().note = document.getElementById("todayNote").value.trim();
+      saveState();
+      renderLogs();
+      const status = document.getElementById("noteSaveStatus");
+      if (status) status.textContent = `备注已保存：${new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" })}`;
+      if (showMessage) showToast("今日学习备注已保存 💌");
+    }
+
+    function autoSaveTodayNote() {
+      clearTimeout(autoSaveTodayNote.timer);
+      const status = document.getElementById("noteSaveStatus");
+      if (status) status.textContent = "正在自动保存备注……";
+      autoSaveTodayNote.timer = setTimeout(() => saveTodayNote(false), 600);
+    }
+
+    function updateSubject(index, patch, rerender = true) {
+      state.subjects[index] = { ...state.subjects[index], ...patch };
+      saveState();
+      if (rerender) renderSubjects();
+    }
+
+    function drawEnergyCard() {
+      const card = energyCards[Math.floor(Math.random() * energyCards.length)];
+      document.getElementById("energyResult").innerHTML = `<strong>${card.name}</strong><br>${card.text}`;
+      showToast(`抽到：${card.name}`);
+    }
+
+    function changeQuote() {
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById("dailyQuote").textContent = quote;
+    }
+
+    function render() {
+      const now = new Date();
+      const days = daysUntilExam();
+      const log = todayLog();
+      const streak = calcStreak();
+      const active = activeDates();
+      const coffeeProgress = nextCoffeeProgress();
+      const available = availableCoffee();
+      const energy = Math.min(100, Math.round(Number(log.hours || 0) * 10));
+
+      document.getElementById("todayText").textContent = `🎀 ${formatDateCN(now)}`;
+      document.getElementById("daysLeft").textContent = days >= 0 ? days : 0;
+      document.getElementById("stageMessage").textContent = getStageMessage(days);
+
+      document.getElementById("streakDays").textContent = streak;
+      document.getElementById("totalHours").textContent = formatHours(state.totalHours);
+      document.getElementById("totalDays").textContent = active.length;
+      document.getElementById("coffeeCount").textContent = state.coffeeRedeemed;
+      document.getElementById("todayHours").textContent = formatHours(log.hours || 0);
+      document.getElementById("todayStatus").textContent = Number(log.hours || 0) > 0 ? "已打卡 ✅" : "未打卡 🎀";
+      document.getElementById("todayNote").value = log.note || "";
+      const mobileTodayHours = document.getElementById("mobileTodayHours");
+      const mobileStageText = document.getElementById("mobileStageText");
+      if (mobileTodayHours) mobileTodayHours.textContent = formatHours(log.hours || 0);
+      if (mobileStageText) mobileStageText.textContent = `还剩 ${days >= 0 ? days : 0} 天 · ${getStageLabel(days)}`;
+
+      const displayLack = coffeeProgress === 0 ? 20 : Math.round((20 - coffeeProgress) * 10) / 10;
+      const displayProgress = available > 0 ? 20 : coffeeProgress;
+      document.getElementById("coffeeInfo").innerHTML = available > 0
+        ? `🎉 已获得 <strong>${available}</strong> 张咖啡兑换券！<br>可以找 <strong>董纪君</strong> 兑换咖啡啦。`
+        : `距离下一杯咖啡还差 <strong>${formatHours(displayLack)} 小时</strong>。<br>每学 0.5 小时，都在靠近一杯甜甜的奖励。`;
+      document.getElementById("coffeeProgressText").textContent = `${formatHours(displayProgress)} / 20 h`;
+      document.getElementById("coffeeBar").style.width = `${Math.min(100, (displayProgress / 20) * 100)}%`;
+      const mobileCoffeeLine = document.getElementById("mobileCoffeeLine");
+      if (mobileCoffeeLine) {
+        mobileCoffeeLine.innerHTML = available > 0
+          ? `☕ 已解锁 <strong>${available}</strong> 张咖啡券，可以兑换啦！`
+          : `☕ 下一杯还差 <strong>${formatHours(displayLack)} 小时</strong>，当前 ${formatHours(displayProgress)} / 20 h`;
+      }
+
+      document.getElementById("energyText").textContent = `${energy} / 100`;
+      document.getElementById("energyBar").style.width = `${energy}%`;
+      if (energy === 0) document.getElementById("energyResult").textContent = "Kitty 在等你打开书哦，哪怕先学半小时也很棒。";
+      else if (energy < 30) document.getElementById("energyResult").textContent = "Kitty 已经收到一点学习能量啦，再来半小时会更棒。";
+      else if (energy < 70) document.getElementById("energyResult").textContent = "今天状态不错，学习小火苗已经点起来了。";
+      else if (energy < 100) document.getElementById("energyResult").textContent = "学习状态很棒，Kitty 正在为你鼓掌。";
+      else document.getElementById("energyResult").textContent = "Kitty 今天被你喂饱学习能量啦，闪闪发光！";
+
+      renderSubjects();
+      renderCalendar();
+      renderLogs();
+      renderBadges();
+    }
+
+    function renderSubjects() {
+      const list = document.getElementById("subjectList");
+      list.innerHTML = "";
+      state.subjects.forEach((subject, index) => {
+        const item = document.createElement("div");
+        item.className = "subject-item";
+        item.innerHTML = `
+          <div class="subject-top">
+            <div class="subject-name"><input value="${escapeHtml(subject.name)}" aria-label="科目名称" /></div>
+            <div class="subject-value">${Number(subject.progress || 0)}%</div>
+          </div>
+          <input type="range" min="0" max="100" value="${Number(subject.progress || 0)}" aria-label="${escapeHtml(subject.name)}进度" />
+          <div class="subject-note">
+            <input value="${escapeHtml(subject.note || "")}" placeholder="备注：例如二刷中 / 错题整理 / 暂未开始" />
+            <button class="btn secondary small" type="button">保存</button>
+            <button class="btn secondary small" type="button">删除</button>
+          </div>
+        `;
+        const nameInput = item.querySelector(".subject-name input");
+        const range = item.querySelector("input[type='range']");
+        const value = item.querySelector(".subject-value");
+        const noteInput = item.querySelector(".subject-note input");
+        const saveBtn = item.querySelectorAll("button")[0];
+        const delBtn = item.querySelectorAll("button")[1];
+
+        range.addEventListener("input", () => {
+          value.textContent = `${range.value}%`;
+          state.subjects[index].progress = Number(range.value);
+          saveState();
+        });
+        saveBtn.addEventListener("click", () => {
+          updateSubject(index, { name: nameInput.value.trim() || "未命名科目", note: noteInput.value.trim() }, true);
+          showToast("科目进度已保存 🎀");
+        });
+        delBtn.addEventListener("click", () => {
+          if (!confirm("确定删除这个科目吗？")) return;
+          state.subjects.splice(index, 1);
+          saveState();
+          renderSubjects();
+          showToast("已删除该科目");
+        });
+        list.appendChild(item);
+      });
+
+      const add = document.createElement("button");
+      add.className = "btn secondary";
+      add.textContent = "+ 添加自定义科目";
+      add.addEventListener("click", () => {
+        state.subjects.push({ name: "新科目 🎀", progress: 0, note: "" });
+        saveState();
+        renderSubjects();
+      });
+      list.appendChild(add);
+    }
+
+    function renderCalendar() {
+      const calendar = document.getElementById("calendar");
+      calendar.innerHTML = "";
+      ["日", "一", "二", "三", "四", "五", "六"].forEach(w => {
+        const node = document.createElement("div");
+        node.className = "weekday";
+        node.textContent = w;
+        calendar.appendChild(node);
+      });
+
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      const first = new Date(year, month, 1);
+      const last = new Date(year, month + 1, 0);
+      for (let i = 0; i < first.getDay(); i++) {
+        const empty = document.createElement("div");
+        empty.className = "day empty";
+        calendar.appendChild(empty);
+      }
+      for (let d = 1; d <= last.getDate(); d++) {
+        const date = new Date(year, month, d);
+        const key = localDateString(date);
+        const hours = Number((state.logs[key] || {}).hours || 0);
+        const day = document.createElement("div");
+        let level = 0;
+        if (hours > 0 && hours < 1) level = 1;
+        else if (hours >= 1 && hours < 3) level = 2;
+        else if (hours >= 3 && hours < 5) level = 3;
+        else if (hours >= 5) level = 4;
+        day.className = `day level-${level}` + (key === localDateString() ? " today" : "");
+        day.title = `${key} 学习 ${formatHours(hours)} 小时`;
+        day.innerHTML = `<span>${d}</span><span class="hours">${hours > 0 ? formatHours(hours) + "h" : "🎀"}</span>`;
+        calendar.appendChild(day);
+      }
+    }
+
+    function renderLogs() {
+      const logs = document.getElementById("logs");
+      const entries = Object.entries(state.logs)
+        .filter(([, log]) => Number(log.hours || 0) > 0 || (log.note || "").trim())
+        .sort((a, b) => b[0].localeCompare(a[0]));
+      if (!entries.length) {
+        logs.innerHTML = `<div class="voucher">还没有学习记录。今天先从 0.5 小时开始吧 🎀</div>`;
+        return;
+      }
+      logs.innerHTML = entries.map(([date, log]) => `
+        <div class="log-item">
+          <div class="log-date">${date.slice(5).replace("-", "/")}</div>
+          <div class="log-content">${escapeHtml(log.note || "今天有认真学习，但还没有写备注。")}</div>
+          <div class="log-hours">${formatHours(log.hours || 0)}h</div>
+        </div>
+      `).join("");
+    }
+
+    function renderBadges() {
+      const wall = document.getElementById("badgeWall");
+      wall.innerHTML = badges.map(b => {
+        const ok = b.test(state);
+        return `
+          <div class="badge ${ok ? "unlocked" : ""}">
+            <div class="badge-icon">${b.icon}</div>
+            <div>${b.title}</div>
+            <small>${b.desc}</small>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function exportData() {
+      const payload = {
+        ...state,
+        activeTimer: studyTimer ? {
+          hours: studyTimer.hours,
+          totalSeconds: studyTimer.totalSeconds,
+          remainingSeconds: getTimerRemaining(),
+          endTime: studyTimer.endTime,
+          paused: studyTimer.paused,
+          startedAt: studyTimer.startedAt
+        } : null
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `kitty-fakao-data-${localDateString()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast("数据已导出，可作为备份保存 💾");
+    }
+
+    function importData(file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          if (!data || typeof data !== "object") throw new Error("invalid");
+          clearStudyTimer(false);
+          state = {
+            totalHours: Number(data.totalHours || 0),
+            coffeeRedeemed: Number(data.coffeeRedeemed || 0),
+            logs: data.logs && typeof data.logs === "object" ? data.logs : {},
+            subjects: Array.isArray(data.subjects) ? data.subjects : JSON.parse(JSON.stringify(defaultSubjects)),
+            history: Array.isArray(data.history) ? data.history : []
+          };
+          state.coffeeRedeemed = Math.min(state.coffeeRedeemed, Math.floor(state.totalHours / 20));
+          if (data.activeTimer && typeof data.activeTimer === "object") {
+            studyTimer = {
+              hours: Number(data.activeTimer.hours || 0),
+              totalSeconds: Number(data.activeTimer.totalSeconds || 0),
+              remainingSeconds: Number(data.activeTimer.remainingSeconds || 0),
+              endTime: data.activeTimer.endTime ? Number(data.activeTimer.endTime) : null,
+              paused: Boolean(data.activeTimer.paused),
+              startedAt: data.activeTimer.startedAt || new Date().toISOString()
+            };
+            if (studyTimer.hours > 0 && studyTimer.totalSeconds > 0) saveActiveTimer();
+            else studyTimer = null;
+          }
+          saveState();
+          render();
+          restoreActiveTimerOnLoad();
+          showToast("数据导入成功 🎀");
+        } catch (e) {
+          showToast("导入失败，请选择正确的 JSON 备份文件");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetAll() {
+      if (!confirm("确定要重置全部数据吗？这个操作不能撤回。")) return;
+      clearStudyTimer(false);
+      state = freshState();
+      saveState();
+      render();
+      showToast("已重置全部数据，可以重新开始啦");
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById("toast");
+      toast.textContent = text;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function showModal(icon, title, text) {
+      document.getElementById("modalIcon").textContent = icon;
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalText").textContent = text;
+      document.getElementById("modalBackdrop").classList.add("show");
+    }
+
+    function closeModal() {
+      document.getElementById("modalBackdrop").classList.remove("show");
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    document.querySelectorAll("[data-add-hours]").forEach(btn => {
+      btn.addEventListener("click", () => startStudyTimer(btn.dataset.addHours));
+    });
+    document.getElementById("addCustomBtn").addEventListener("click", () => {
+      const input = document.getElementById("customHours");
+      if (startStudyTimer(input.value)) input.value = "";
+    });
+    document.getElementById("saveNoteBtn").addEventListener("click", () => saveTodayNote(true));
+    document.getElementById("todayNote").addEventListener("input", autoSaveTodayNote);
+    document.getElementById("todayNote").addEventListener("blur", () => saveTodayNote(false));
+    document.getElementById("pauseTimerBtn").addEventListener("click", toggleStudyTimer);
+    document.getElementById("cancelTimerBtn").addEventListener("click", cancelStudyTimer);
+    document.getElementById("redeemCoffeeBtn").addEventListener("click", redeemCoffee);
+    document.getElementById("undoLastBtn").addEventListener("click", undoLastAdd);
+    document.getElementById("changeQuoteBtn").addEventListener("click", changeQuote);
+    document.getElementById("drawCardBtn").addEventListener("click", drawEnergyCard);
+    document.getElementById("exportBtn").addEventListener("click", exportData);
+    document.getElementById("importBtn").addEventListener("click", () => document.getElementById("importFile").click());
+    document.getElementById("importFile").addEventListener("change", e => {
+      if (e.target.files && e.target.files[0]) importData(e.target.files[0]);
+      e.target.value = "";
+    });
+    document.getElementById("resetBtn").addEventListener("click", resetAll);
+    document.getElementById("closeModalBtn").addEventListener("click", closeModal);
+    document.getElementById("modalBackdrop").addEventListener("click", e => {
+      if (e.target.id === "modalBackdrop") closeModal();
+    });
+    document.getElementById("timerBackdrop").addEventListener("click", e => {
+      if (e.target.id === "timerBackdrop") showToast("倒计时进行中，不能点外面关闭；可以暂停或取消本次 🎀");
+    });
+
+    function scrollToCard(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    const focusNoteBtn = document.getElementById("focusNoteBtn");
+    if (focusNoteBtn) {
+      focusNoteBtn.addEventListener("click", () => {
+        scrollToCard("checkinCard");
+        setTimeout(() => document.getElementById("todayNote").focus(), 380);
+      });
+    }
+
+    const mobileNoteBtn = document.getElementById("mobileNoteBtn");
+    if (mobileNoteBtn) {
+      mobileNoteBtn.addEventListener("click", () => {
+        scrollToCard("checkinCard");
+        setTimeout(() => document.getElementById("todayNote").focus(), 380);
+      });
+    }
+
+    const jumpLogsBtn = document.getElementById("jumpLogsBtn");
+    if (jumpLogsBtn) {
+      jumpLogsBtn.addEventListener("click", () => scrollToCard("logsCard"));
+    }
+
+    const quoteIndex = Math.abs(localDateString().split("").reduce((sum, ch) => sum + ch.charCodeAt(0), 0)) % quotes.length;
+    document.getElementById("dailyQuote").textContent = quotes[quoteIndex];
+    render();
+    restoreActiveTimerOnLoad();
+  </script>
+</body>
+</html>
